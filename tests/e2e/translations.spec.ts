@@ -134,7 +134,7 @@ test.describe('Locale Completeness', () => {
   const requiredKeys = [
     'extName', 'extDesc', 'cmdToggle',
     'uiTitle', 'uiCopy', 'uiCopied', 'uiCopyFail', 'uiOpenMap', 'uiOpenEarth', 'uiClose', 'uiNoAddress',
-    'optTitle', 'optLegendMap', 'optLegendOverlay', 'optMapProvider', 'optPosition', 'optTheme', 'optAutoCopy',
+    'optTitle', 'optLegendMap', 'optLegendOverlay', 'optMapProvider', 'optPosition', 'optTheme', 'optAutoCopy', 'optShowEarth',
     'optSave', 'optSaved',
     'optGoogle', 'optOsm', 'optApple',
     'posBR', 'posBL', 'posTR', 'posTL',
@@ -152,43 +152,43 @@ test.describe('Locale Completeness', () => {
       expect(locale).toHaveProperty(key);
     }
     
-    expect(Object.keys(locale).length).toBe(39);
+    expect(Object.keys(locale).length).toBe(41);
   });
 
   test('English locale should have all required keys', async ({ page }) => {
     const localePath = path.join(__dirname, '../../_locales/en/messages.json');
     const locale = JSON.parse(readFileSync(localePath, 'utf-8'));
-    
+
     for (const key of requiredKeys) {
       expect(locale[key]).toBeDefined();
       expect(locale[key].message).toBeTruthy();
     }
-    
-    expect(Object.keys(locale).length).toBe(39);
+
+    expect(Object.keys(locale).length).toBe(41);
   });
 
   test('Spanish locale should have all required keys', async ({ page }) => {
     const localePath = path.join(__dirname, '../../_locales/es/messages.json');
     const locale = JSON.parse(readFileSync(localePath, 'utf-8'));
-    
+
     for (const key of requiredKeys) {
       expect(locale[key]).toBeDefined();
       expect(locale[key].message).toBeTruthy();
     }
-    
-    expect(Object.keys(locale).length).toBe(39);
+
+    expect(Object.keys(locale).length).toBe(41);
   });
 
   test('Italian locale should have all required keys', async ({ page }) => {
     const localePath = path.join(__dirname, '../../_locales/it/messages.json');
     const locale = JSON.parse(readFileSync(localePath, 'utf-8'));
-    
+
     for (const key of requiredKeys) {
       expect(locale[key]).toBeDefined();
       expect(locale[key].message).toBeTruthy();
     }
-    
-    expect(Object.keys(locale).length).toBe(39);
+
+    expect(Object.keys(locale).length).toBe(41);
   });
 });
 
@@ -269,9 +269,9 @@ test.describe('Locale Switching E2E', () => {
 
     // uiOpenEarth should be different in each language
     expect(locale_de.uiOpenEarth.message).toBe('Google Earth öffnen');
-    expect(locale_de.uiOpenEarth.message).toBe('Open Google Earth');
-    expect(locale_de.uiOpenEarth.message).toBe('Abrir Earth öffnen');
-    expect(locale_de.uiOpenEarth.message).toBe('Apri Earth öffnen');
+    expect(locale_en.uiOpenEarth.message).toBe('Open Google Earth');
+    expect(locale_es.uiOpenEarth.message).toBe('Abrir Google Earth');
+    expect(locale_it.uiOpenEarth.message).toBe('Apri Google Earth');
   });
 
   test('should preserve locale structure across all languages', async ({ page }) => {
