@@ -1,6 +1,6 @@
 {
   "name": "@immo24/metadata",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Extract structured metadata from ImmoScout24 window.IS24 object",
   "type": "module",
   "main": "./dist/index.js",
