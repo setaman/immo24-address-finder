@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseIS24FromScripts } from '@immo24/metadata';
+import { parseIS24FromScripts } from '../src/index.js';
 
 function createDocumentWithScript(scriptContent: string): Document {
   const doc = document.implementation.createHTMLDocument('test');

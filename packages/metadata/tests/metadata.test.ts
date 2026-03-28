@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractMetadata, formatDate } from '@immo24/metadata';
+import { extractMetadata, formatDate } from '../src/index.js';
 
 // Full window.IS24 fixture based on real data
 const fullIS24 = {

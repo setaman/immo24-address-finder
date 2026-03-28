@@ -4,7 +4,7 @@
  * These tests verify which fields are actually extractable.
  */
 import { describe, it, expect } from 'vitest';
-import { parseIS24FromScripts, extractMetadata } from '@immo24/metadata';
+import { parseIS24FromScripts, extractMetadata } from '../src/index.js';
 
 // Simulate the real IS24 script structure observed via browser debug
 function buildRealWorldDocument(): Document {
