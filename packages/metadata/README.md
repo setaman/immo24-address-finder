@@ -182,4 +182,4 @@ Node.js >= 16
 
 ## License
 
-MIT
+CC-BY-NC-SA-4.0 — see [LICENSE](../../LICENSE) for details.
