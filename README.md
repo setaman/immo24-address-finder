@@ -1,9 +1,8 @@
 # Immo24 Address Finder
 
-[![CI](https://github.com/kidzki/immo24-address-decoder/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/kidzki/immo24-address-decoder/actions/workflows/ci.yml)
-[![Tests](https://github.com/kidzki/immo24-address-decoder/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/kidzki/immo24-address-decoder/actions/workflows/test.yml)
-[![Release](https://img.shields.io/github/v/release/kidzki/immo24-address-decoder?display_name=tag&sort=semver)](https://github.com/kidzki/immo24-address-decoder/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![CI](https://github.com/kidzki/immo24-address-finder/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/kidzki/immo24-address-finder/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/kidzki/immo24-address-finder?display_name=tag&sort=semver)](https://github.com/kidzki/immo24-address-finder/releases)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 
 [![Uses Bun](https://img.shields.io/badge/Uses-Bun-000000?logo=bun&logoColor=white)](https://bun.sh)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -130,5 +129,5 @@ PRs welcome! Please open an issue first for discussion if you want to add a new 
 
 <div align="center">
 Made with ❤️ in Germany ·  
-<a href="https://github.com/kidzki/immo24-address-decoder">GitHub Repo</a>
+<a href="https://github.com/kidzki/immo24-address-finder">GitHub Repo</a>
 </div>
