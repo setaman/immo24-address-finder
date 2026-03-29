@@ -22,6 +22,16 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug"
   },
+  "keywords": [
+    "immobilienscout24",
+    "immo24",
+    "browser-extension",
+    "chrome-extension",
+    "firefox-addon",
+    "address-decoder",
+    "real-estate",
+    "germany"
+  ],
   "dependencies": {
     "@immo24/decoder": "workspace:*",
     "@immo24/metadata": "workspace:*"
