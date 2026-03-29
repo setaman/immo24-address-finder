@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-03-29
+
+### ✨ Features
+
+- **Google Earth Button**: New button in the overlay to open the decoded address directly in Google Earth (configurable emoji button in the corner)
+- **Expose Metadata**: Listing publication and last-modified dates are now shown in the overlay
+- **Date display toggle**: New option in settings to show or hide the date fields
+- **Overlay without address**: The overlay is now shown even when the address cannot yet be decoded — metadata is still visible
+
+### 📦 Packages
+
+- **`@immo24/decoder` v0.1.0**: Address decoding logic extracted into a standalone npm package
+- **`@immo24/metadata` v0.2.0**: IS24 metadata extraction as a standalone npm package (`window.IS24` parsing)
+
+### 🐛 Bug Fixes
+
+- Fixed TypeScript path alias resolution for `@immo24/decoder`
+- Fixed HTTPS error in Google Earth link; adjusted zoom level and styling
+- Corrected E2E translation tests
+
+### 🔧 CI/CD
+
+- Added npm publish workflow for `@immo24/metadata`
+
+### 🔄 Refactoring
+
+- Removed unused dead code (adapters, builders, commands, factories, services)
+
+### 📚 Documentation
+
+- Updated architecture documentation
+- Added README for `@immo24/metadata` package with API reference and usage examples
+
+---
+
 ## [0.2.0] - 2025-10-07
 
 ### 🎉 Major Changes
@@ -107,8 +142,8 @@ All 4 locales (German, English, Spanish, Italian) are now:
 ## Installation
 
 Download the appropriate package for your browser:
-- **Chromium/Chrome/Edge**: `immo24-chromium-0.2.0.zip`
-- **Firefox**: `immo24-firefox-0.2.0.zip`
+- **Chromium/Chrome/Edge**: `immo24-chromium-0.3.0.zip`
+- **Firefox**: `immo24-firefox-0.3.0.zip`
 
 ## Migration from 0.1.x
 
