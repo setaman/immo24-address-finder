@@ -1,6 +1,15 @@
 // Shared types for the extension
 
-export type { Address } from '@immo24/decoder';
+import type { Address as DecoderAddress } from '@immo24/decoder';
+
+export type AddressConfidence = 'exact' | 'high' | 'medium' | 'low';
+
+export interface Address extends DecoderAddress {
+  lat?: number;
+  lng?: number;
+  confidence?: AddressConfidence;
+  source?: string;
+}
 
 export type MapProvider = 'google' | 'osm' | 'apple';
 export type Position = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
