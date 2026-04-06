@@ -882,10 +882,6 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
 
     createStatusOverlay('uiSearching');
 
-    // Extract IS24 metadata for dates display
-    const is24 = extractIs24Object();
-    const metadata = is24 ? extractMetadata(is24) : undefined;
-
     let attempt = 0;
 
     async function tryDecode() {
@@ -916,6 +912,13 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
               : '';
           if (copyText) copyToClipboard(copyText);
         }
+
+        // Extract IS24 metadata fresh (page may have loaded more since retry started)
+        const is24 = extractIs24Object();
+        const metadata = is24 ? extractMetadata(is24) : undefined;
+
+        console.log(`${LOG_PREFIX} %cMetadata: exposeId=%c${metadata?.exposeId || 'null'} %cprice=%c${metadata?.price?.amount ?? 'null'}`,
+          LOG_STYLE, '', LOG_DIM, '', LOG_DIM);
 
         // Track price if metadata has it
         let priceComparison: PriceComparison | null = null;
@@ -966,8 +969,12 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
       // All retries exhausted
       lastDecodeSuccess = false;
 
+      // Extract metadata for dates-only fallback
+      const fallbackIs24 = extractIs24Object();
+      const fallbackMetadata = fallbackIs24 ? extractMetadata(fallbackIs24) : undefined;
+
       // If we have dates metadata but no address, show dates-only overlay
-      const hasDates = settings.showDates && metadata && (metadata.publishedAt || metadata.lastModifiedAt);
+      const hasDates = settings.showDates && fallbackMetadata && (fallbackMetadata.publishedAt || fallbackMetadata.lastModifiedAt);
       if (hasDates) {
         removeOverlay();
 
@@ -989,17 +996,17 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
         metadataDiv.style.fontSize = '12px';
         metadataDiv.style.opacity = '0.85';
 
-        if (metadata!.publishedAt) {
+        if (fallbackMetadata!.publishedAt) {
           const publishedLine = document.createElement('div');
           publishedLine.style.margin = '2px 0';
-          publishedLine.textContent = `\uD83D\uDCC5 ${t('uiPublished')}: ${metadata!.publishedAt}`;
+          publishedLine.textContent = `\uD83D\uDCC5 ${t('uiPublished')}: ${fallbackMetadata!.publishedAt}`;
           metadataDiv.appendChild(publishedLine);
         }
 
-        if (metadata!.lastModifiedAt) {
+        if (fallbackMetadata!.lastModifiedAt) {
           const modifiedLine = document.createElement('div');
           modifiedLine.style.margin = '2px 0';
-          modifiedLine.textContent = `\uD83D\uDD04 ${t('uiModified')}: ${metadata!.lastModifiedAt}`;
+          modifiedLine.textContent = `\uD83D\uDD04 ${t('uiModified')}: ${fallbackMetadata!.lastModifiedAt}`;
           metadataDiv.appendChild(modifiedLine);
         }
 
