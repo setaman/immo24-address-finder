@@ -4,6 +4,8 @@ import type { ExposeMetadata } from '@immo24/metadata';
 import type { Address, AddressConfidence, Settings, ToggleOverlayMessage } from './types.js';
 import { extractPageMetadata } from './strategies/metadata-extraction.js';
 import { refineCoordinates } from './strategies/refinement-pipeline.js';
+import { trackPrice, formatPriceLine } from './services/price-tracker.js';
+import type { PriceComparison } from './services/price-tracker.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const API: any = (typeof browser !== 'undefined') ? (browser as any) : chrome;
@@ -291,10 +293,21 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
       console.groupEnd();
 
       if (result.confidence !== 'low' && overlayState !== 'dismissed') {
-        // Extract metadata for dates display on the refined overlay
+        // Extract metadata for dates + price display on the refined overlay
         const is24 = extractIs24Object();
         const exposeMetadata = is24 ? extractMetadata(is24) : undefined;
-        createSuccessOverlay(result.address, exposeMetadata);
+        let refinedPrice: PriceComparison | null = null;
+        if (exposeMetadata?.exposeId && exposeMetadata.price?.amount) {
+          try {
+            refinedPrice = await trackPrice(
+              exposeMetadata.exposeId,
+              exposeMetadata.price.amount,
+              exposeMetadata.price.pricePerSqm,
+              exposeMetadata.price.type,
+            );
+          } catch { /* non-critical */ }
+        }
+        createSuccessOverlay(result.address, exposeMetadata, refinedPrice);
 
         if (settings.autoCopy) {
           const a = result.address;
@@ -600,7 +613,7 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
 
   // --- Overlay: Success (address found) ---
 
-  function createSuccessOverlay(address: Address, metadata?: ExposeMetadata) {
+  function createSuccessOverlay(address: Address, metadata?: ExposeMetadata, priceComparison?: PriceComparison | null) {
     removeOverlay();
 
     const { theme, position, mapProvider, showEarth, showDates } = settings;
@@ -697,6 +710,38 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
       }
 
       div.appendChild(metadataDiv);
+    }
+
+    // Price section
+    if (priceComparison) {
+      const priceDiv = document.createElement('div');
+      priceDiv.style.margin = '0 0 10px';
+      priceDiv.style.fontSize = '12px';
+
+      const priceLine = document.createElement('div');
+      priceLine.style.margin = '2px 0';
+
+      const priceText = formatPriceLine(priceComparison);
+      const hasChange = priceComparison.previous !== null && priceComparison.changePercent !== null;
+
+      if (hasChange) {
+        const isDown = priceComparison.changePercent! < 0;
+        priceLine.style.color = isDown ? '#22c55e' : '#ef4444';
+        priceLine.style.fontWeight = '600';
+      }
+
+      priceLine.textContent = `\uD83D\uDCB0 ${priceText}`;
+      priceDiv.appendChild(priceLine);
+
+      if (priceComparison.currentPerSqm) {
+        const sqmLine = document.createElement('div');
+        sqmLine.style.margin = '2px 0';
+        sqmLine.style.opacity = '0.85';
+        sqmLine.textContent = `\uD83D\uDCD0 ${Math.round(priceComparison.currentPerSqm).toLocaleString('de-DE')} \u20AC/m\u00B2`;
+        priceDiv.appendChild(sqmLine);
+      }
+
+      div.appendChild(priceDiv);
     }
 
     const actions = document.createElement('div');
@@ -843,7 +888,7 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
 
     let attempt = 0;
 
-    function tryDecode() {
+    async function tryDecode() {
       attempt++;
       if (overlayState === 'dismissed') {
         decoderRunning = false;
@@ -872,7 +917,22 @@ const LOG_WARN = 'color: #f59e0b; font-weight: bold';
           if (copyText) copyToClipboard(copyText);
         }
 
-        createSuccessOverlay(result.address, metadata);
+        // Track price if metadata has it
+        let priceComparison: PriceComparison | null = null;
+        if (metadata?.exposeId && metadata.price?.amount) {
+          try {
+            priceComparison = await trackPrice(
+              metadata.exposeId,
+              metadata.price.amount,
+              metadata.price.pricePerSqm,
+              metadata.price.type,
+            );
+          } catch {
+            // Price tracking is non-critical
+          }
+        }
+
+        createSuccessOverlay(result.address, metadata, priceComparison);
         decoderRunning = false;
 
         // Determine if refinement is needed
