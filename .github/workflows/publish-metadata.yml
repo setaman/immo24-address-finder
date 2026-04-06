@@ -1,9 +1,7 @@
 name: Publish @immo24/metadata
 
 on:
-  push:
-    tags:
-      - 'metadata/v*'
+  workflow_dispatch: # disabled — manual trigger only
 
 permissions:
   contents: read

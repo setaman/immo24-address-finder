@@ -1,11 +1,7 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [main, master, develop]
-    tags: ['v*']
-  pull_request:
-    branches: [main, master]
+  workflow_dispatch: # disabled — manual trigger only
 
 # Permissions for release creation
 permissions:

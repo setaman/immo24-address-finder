@@ -1,9 +1,7 @@
 name: Publish @immo24/decoder
 
 on:
-  push:
-    tags:
-      - 'decoder/v*'
+  workflow_dispatch: # disabled — manual trigger only
 
 permissions:
   contents: read
